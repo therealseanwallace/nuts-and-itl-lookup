@@ -6,7 +6,7 @@ NUTS and ITL are hierarchical systems used to divide the territories
 of the EU and UK, respectively. 
 
 At present, ITL mirrors nuts, differing
-only in the first two letters of its codes i.e. TL vs UK. This is expected to last until at least 2014 so this package should be good for both til then. If anyone uses it, I'll keep my eye on developments and update it as needed.
+only in the first two letters of its codes i.e. TL vs UK. This is expected to last until at least 2024 so this package should be good for both til then. If anyone uses it, I'll keep my eye on developments and update it as needed.
 
 ## How to use:
 
