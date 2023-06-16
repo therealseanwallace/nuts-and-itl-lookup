@@ -7,7 +7,7 @@ const readFile = async (fileLocation) => {
   return json;
 };
 
-// A simple binary search which will search the sorted nuts array for the query's
+
 const nutsBinarySearch = async (array, l, r, x) => {
   if (r >= l) {
     const mid = Math.floor(l + (r - l) / 2);

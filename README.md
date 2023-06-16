@@ -22,7 +22,7 @@ Require the package in your project:
 
 > nutsLookup("AL033")
 
-The function accepts one paramater: a NUTS or ITL geography code as a string, e.g.:
+The function accepts one parameter: a NUTS or ITL geography code as a string, e.g.:
 
 - "AL033" - Expected result: { code: 'AL033', region: 'Gjirokastër' }
 
