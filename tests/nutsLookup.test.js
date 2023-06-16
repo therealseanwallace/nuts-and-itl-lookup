@@ -25,9 +25,9 @@ const randomArray = randomElements();
 describe("nutsLookup", () => {
   test.each(randomArray)(
     "returns an object with the correct location",
-    (element) => nutsLookup(element.Code).then((result) => {
+    (element) => nutsLookup(element.code).then((result) => {
         expect(result).toBeInstanceOf(Object);
-        expect(result.Region).toEqual(element.Region);
+        expect(result.region).toEqual(element.region);
       })
   );
 });

@@ -10,10 +10,10 @@ const readFile = async (path) => {
 const nutsBinarySearch = async (array, l, r, x) => {
   if (r >= l) {
     const mid = Math.floor(l + (r - l) / 2);
-    if (array[mid].Code === x) {
+    if (array[mid].code === x) {
       return array[mid];
     }
-    if (array[mid].Code > x) {
+    if (array[mid].code > x) {
       return nutsBinarySearch(array, l, mid - 1, x);
     }
     return nutsBinarySearch(array, mid + 1, r, x);
@@ -35,7 +35,7 @@ const nutsLookup = async (query) => {
     if (result === -1) {
       return null;
     }
-    return { Code: query, Region: result.Region };
+    return { code: query, region: result.region };
   }
   result = await nutsBinarySearch(json, 0, json.length - 1, queryToUse);
   if (result === -1) {
