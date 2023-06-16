@@ -23,20 +23,36 @@ const nutsBinarySearch = async (array, l, r, x) => {
 
 const nutsLookup = async (query) => {
   const json = await readFile("./nutsArraySorted.json");
-  let queryToUse = query;
+  
+  let queryToSlice = query;
+
   if (!query) {
     return null;
   }
+
+  if (
+    queryToSlice.length >= 2 &&
+    queryToSlice.slice(0, 2).toLowerCase() === queryToSlice.slice(0, 2)
+  ) {
+    queryToSlice =
+    queryToSlice.charAt(0).toUpperCase() +
+    queryToSlice.charAt(1).toUpperCase() +
+    queryToSlice.slice(2);
+  }
+
+  let queryToUse = queryToSlice;
+
   let result;
-  if (query.startsWith("TL") || query.startsWith("tl")) {
-    queryToUse = `UK${query.slice(2)}`;
-    queryToUse = `UK${queryToUse.slice(2)}`;
+
+  if (queryToUse.startsWith("TL")) {
+    queryToUse = `UK${queryToUse.slice(2)}`; // Correct this line
     result = await nutsBinarySearch(json, 0, json.length - 1, queryToUse);
     if (result === -1) {
       return null;
     }
-    return { code: query, region: result.region };
+    return { code: queryToSlice, region: result.region };
   }
+
   result = await nutsBinarySearch(json, 0, json.length - 1, queryToUse);
   if (result === -1) {
     return null;

@@ -25,9 +25,27 @@ const randomArray = randomElements();
 describe("nutsLookup", () => {
   test.each(randomArray)(
     "returns an object with the correct location",
-    (element) => nutsLookup(element.code).then((result) => {
+    (element) =>
+      nutsLookup(element.code).then((result) => {
         expect(result).toBeInstanceOf(Object);
         expect(result.region).toEqual(element.region);
       })
   );
+  test("Works with lowercase letters", () =>
+    nutsLookup("pl622").then((result) => {
+      expect(result.code).toEqual("PL622");
+      expect(result.region).toEqual("Olsztyński");
+    }));
+
+  test("Works with TL", () =>
+    nutsLookup("TLN07").then((result) => {
+      expect(result.code).toEqual("TLN07");
+      expect(result.region).toEqual("Armagh City, Banbridge and Craigavon");
+    }));
+    
+  test("Works with tl", () =>
+    nutsLookup("tlN07").then((result) => {
+      expect(result.code).toEqual("TLN07");
+      expect(result.region).toEqual("Armagh City, Banbridge and Craigavon");
+    }));
 });
