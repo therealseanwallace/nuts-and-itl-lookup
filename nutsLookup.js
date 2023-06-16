@@ -1,7 +1,8 @@
 const fs = require("fs").promises;
+const path = require("path");
 
-const readFile = async (path) => {
-  const data = await fs.readFile(path, "utf8");
+const readFile = async (fileLocation) => {
+  const data = await fs.readFile(fileLocation, "utf8");
   const json = JSON.parse(data);
   return json;
 };
@@ -22,7 +23,8 @@ const nutsBinarySearch = async (array, l, r, x) => {
 };
 
 const nutsLookup = async (query) => {
-  const json = await readFile("./nutsArraySorted.json");
+  const jsonFilePath = path.join(__dirname, "nutsArraySorted.json");
+  const json = await readFile(jsonFilePath);
   
   let queryToSlice = query;
 
