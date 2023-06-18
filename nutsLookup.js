@@ -7,8 +7,7 @@ const readFile = async (fileLocation) => {
   return json;
 };
 
-
-const nutsBinarySearch = async (array, l, r, x) => {
+const nutsBinarySearch = (array, l, r, x) => {
   if (r >= l) {
     const mid = Math.floor(l + (r - l) / 2);
     if (array[mid].code === x) {
@@ -19,45 +18,46 @@ const nutsBinarySearch = async (array, l, r, x) => {
     }
     return nutsBinarySearch(array, mid + 1, r, x);
   }
-  return -1;
+  return null;
 };
 
 const nutsLookup = async (query) => {
-  const jsonFilePath = path.join(__dirname, "nutsArraySorted.json");
-  const json = await readFile(jsonFilePath);
-  
-  let queryToSlice = query;
-
   if (!query) {
     return null;
   }
 
-  if (
-    queryToSlice.length >= 2 &&
-    queryToSlice.slice(0, 2).toLowerCase() === queryToSlice.slice(0, 2)
-  ) {
-    queryToSlice =
-    queryToSlice.charAt(0).toUpperCase() +
-    queryToSlice.charAt(1).toUpperCase() +
-    queryToSlice.slice(2);
+  let jsonFilePath;
+  let json;
+  try {
+    jsonFilePath = path.join(__dirname, "nutsArraySorted.json");
+    json = await readFile(jsonFilePath);
+  } catch (error) {
+    console.error("Error reading JSON file:", error);  
   }
-
-  let queryToUse = queryToSlice;
+  
+  let queryToUse = query.toUpperCase();
 
   let result;
 
+  // If this is an ITL query
   if (queryToUse.startsWith("TL")) {
-    queryToUse = `UK${queryToUse.slice(2)}`; // Correct this line
-    result = await nutsBinarySearch(json, 0, json.length - 1, queryToUse);
-    if (result === -1) {
-      return null;
-    }
-    return { code: queryToSlice, region: result.region };
+
+    // Handle the edge case of Timor Leste
+    if (queryToUse === "TL") {
+      result = await nutsBinarySearch(json, 0, json.length - 1, "TL");
+      return { code: query.toUpperCase(), region: result.region };
+    };
+
+    // Convert the query to the correct format for the binary search
+    queryToUse = `UK${queryToUse.slice(2)}`;
   }
 
   result = await nutsBinarySearch(json, 0, json.length - 1, queryToUse);
   if (result === -1) {
     return null;
+  }
+  if (query.toUpperCase().startsWith("TL")) {
+    return { code: query.toUpperCase(), region: result.region };
   }
   return result;
 };

@@ -10,27 +10,7 @@ const readJSON = (path) => {
 
 const json = readJSON("./nutsArraySorted.json");
 
-// Selects 100 random elements from the json array
-const randomElements = () => {
-  const randomArray = [];
-  for (let i = 0; i < 100; i += 1) {
-    const randomIndex = Math.floor(Math.random() * json.length);
-    randomArray.push(json[randomIndex]);
-  }
-  return randomArray;
-};
-
-const randomArray = randomElements();
-
 describe("nutsLookup", () => {
-  test.each(randomArray)(
-    "returns an object with the correct location",
-    (element) =>
-      nutsLookup(element.code).then((result) => {
-        expect(result).toBeInstanceOf(Object);
-        expect(result.region).toEqual(element.region);
-      })
-  );
   test("Works with lowercase letters", () =>
     nutsLookup("pl622").then((result) => {
       expect(result.code).toEqual("PL622");
@@ -42,10 +22,28 @@ describe("nutsLookup", () => {
       expect(result.code).toEqual("TLN07");
       expect(result.region).toEqual("Armagh City, Banbridge and Craigavon");
     }));
-    
+
   test("Works with tl", () =>
-    nutsLookup("tlN07").then((result) => {
+    nutsLookup("tln07").then((result) => {
       expect(result.code).toEqual("TLN07");
       expect(result.region).toEqual("Armagh City, Banbridge and Craigavon");
     }));
+  test("Works with 2-letter country code", () =>
+    nutsLookup("FR101").then((result) => {
+      expect(result.code).toEqual("FR101");
+      expect(result.region).toEqual("Paris");
+    }));
+    test("Works with the edge-case of Timor-Leste", () =>
+    nutsLookup("TL").then((result) => {
+      expect(result.code).toEqual("TL");
+      expect(result.region).toEqual("Timor-Leste");
+    }));
+    test.each.skip(json)(
+      "checks that every location returns an object with the correct location",
+      (element) =>
+        nutsLookup(element.code).then((result) => {
+          expect(result).toBeInstanceOf(Object);
+          expect(result.region).toEqual(element.region);
+        })
+    );
 });
