@@ -7,7 +7,7 @@ const readFile = async (fileLocation) => {
   return json;
 };
 
-const nutsBinarySearch = (array, l, r, x) => {
+const nutsBinarySearch = async (array, l, r, x) => {
   if (r >= l) {
     const mid = Math.floor(l + (r - l) / 2);
     if (array[mid].code === x) {
@@ -21,6 +21,15 @@ const nutsBinarySearch = (array, l, r, x) => {
   return null;
 };
 
+
+/**
+ * Looks up a NUTS code in a JSON file and returns an object with the code and region name, if found.
+ *  
+ * @param {string} query - The NUTS or ITL code code to look up.
+ * @return {Promise<object|null>} An object containg the code and name of the corresponding region
+ *                                or null if the NUTS code was not found.
+ */
+
 const nutsLookup = async (query) => {
   if (!query) {
     return null;
@@ -32,7 +41,8 @@ const nutsLookup = async (query) => {
     jsonFilePath = path.join(__dirname, "nutsArraySorted.json");
     json = await readFile(jsonFilePath);
   } catch (error) {
-    console.error("Error reading JSON file:", error);  
+    console.error("Error reading JSON file:", error);
+    return null; 
   }
   
   let queryToUse = query.toUpperCase();
@@ -53,9 +63,11 @@ const nutsLookup = async (query) => {
   }
 
   result = await nutsBinarySearch(json, 0, json.length - 1, queryToUse);
-  if (result === -1) {
+
+  if (result === null) {
     return null;
   }
+
   if (query.toUpperCase().startsWith("TL")) {
     return { code: query.toUpperCase(), region: result.region };
   }
