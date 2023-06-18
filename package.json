@@ -1,6 +1,6 @@
 {
   "name": "nuts-and-itl-lookup",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Enables lookup of NUTS and ITL codes, returning an object with the code and name of the region.",
   "main": "nutsLookup.js",
   "scripts": {
